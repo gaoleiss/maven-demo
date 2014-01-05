@@ -85,6 +85,7 @@ mvn -o test         (test offline)
 ```
 
 * 使用`maven-assembly-plugin`构建一个可运行的JAR 文件，并将依赖包的class文件打入到构建的jar里面
+
 ```
 <build>
         <plugins>
@@ -128,7 +129,9 @@ mvn -o test         (test offline)
   bin/
 ```
 
+
 * 将libA,libB, appC放入dependencies
+
 ```
 <dependencies>
         <dependency>
@@ -150,8 +153,10 @@ mvn -o test         (test offline)
             <optional>true</optional>
         </dependency>
 </dependencies>
-``` 
+```
+
 * 使用插件`maven-dependency-plugin`将liba.jar， libb.jar，appC.jar打入到 lib 目录
+
 ```
 <plugin>
 	<groupId>org.apache.maven.plugins</groupId>
@@ -173,8 +178,10 @@ mvn -o test         (test offline)
 	    </execution>
 	</executions>
 </plugin>
-``` 
+```
+
 * 使用插件`maven-resources-plugin`，拷贝appC的config目录已经生成并目录
+
 ```
 <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
