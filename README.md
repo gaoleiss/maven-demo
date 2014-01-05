@@ -73,6 +73,7 @@ mvn -o test         (test offline)
 这个词只能用于开发过程中，因为一般来说，项目组都会频繁发布一些版本，最后实际发布的时候，会在这些snapshot版本中寻找一个稳定的，用于正式发布，比如1.4版本发布之前，就会有一系列的1.4-SNAPSHOT，而实际发布的1.4，也是从中拿出来的一个稳定版。
 
 ### 8.假设我们有两个Project libA,appC,其中appC包含主执行主程序，libA是一个library库Project。如何将上面的两个Project 打包成一个可运行Jar包，同时Jar包包含所有依赖的库（包含libA)。###
+对这个问题的实现参见[appC的pem](https://github.com/gaoleiss/maven-demo/blob/master/appC/pom.xml):
 
 * 将libA放入dependencies
 ```
@@ -85,7 +86,6 @@ mvn -o test         (test offline)
 ```
 
 * 使用`maven-assembly-plugin`构建一个可运行的JAR 文件，并将依赖包的class文件打入到构建的jar里面
-
 ```
 <build>
         <plugins>
@@ -129,6 +129,7 @@ mvn -o test         (test offline)
   bin/
 ```
 
+对这个问题的实现参见[根目录的pem](https://github.com/gaoleiss/maven-demo/blob/master/pom.xml):
 
 * 将libA,libB, appC放入dependencies
 
@@ -153,9 +154,9 @@ mvn -o test         (test offline)
             <optional>true</optional>
         </dependency>
 </dependencies>
-```
+``` 
 
-* 使用插件`maven-dependency-plugin`将liba.jar， libb.jar，appC.jar打入到 lib 目录
+* 使用插件`maven-dependency-plugin`将libA.jar， libB.jar，appC.jar打入到 lib 目录
 
 ```
 <plugin>
@@ -178,47 +179,47 @@ mvn -o test         (test offline)
 	    </execution>
 	</executions>
 </plugin>
-```
+``` 
 
 * 使用插件`maven-resources-plugin`，拷贝appC的config目录已经生成并目录
 
 ```
 <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/${project.artifactId}/conf</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${project.basedir}/appC/src/main/resources/conf</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/${project.artifactId}/bin</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.6</version>
+        <executions>
+            <execution>
+                <id>copy-resources</id>
+                <phase>validate</phase>
+                <goals>
+                    <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/${project.artifactId}/conf</outputDirectory>
+                    <resources>
+                        <resource>
+                            <directory>${project.basedir}/appC/src/main/resources/conf</directory>
+                            <filtering>true</filtering>
+                        </resource>
+                    </resources>
+                </configuration>
+            </execution>
+        </executions>
+    </plugin>
+    <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.6</version>
+        <executions>
+            <execution>
+                <id>copy-resources</id>
+                <phase>validate</phase>
+                <goals>
+                    <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/${project.artifactId}/bin</outputDirectory>
+                </configuration>
+            </execution>
+        </executions>
+</plugin>
 ```
