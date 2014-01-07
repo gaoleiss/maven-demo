@@ -33,9 +33,8 @@ maven内置了三个生命周期，并为每个生命周期内置了一些阶段
 
 
 ### 3. maven 中的profile有什么作用？###
-一个Profile可以覆盖项目构件的最终名称，项目依赖，插件配置以影响构建行为。Profile还可以覆盖分发配置；例如，如果你通过一个staging profile发布一个构件到staging服务器上，你就可以创建一个profile然后在里面定义distributionManagement元素。
+项目开发时，有可能会在多个不同的环境构建，例如不同的操作系统，JDK等等，另外项目打包的产物也可能会发布到不同的环境运行，例如测试环境，生产环境，这时候我们往往需要频繁的修改POM文件来适应各种情况。
 
-总之,profile可以覆盖POM中定义的的任何东西，因些profile一般放在配置文件的最下方。
 
 ###4. 我们在使用maven依赖管理的时候，每个依赖项都有下面这些属性，都有什么作用？###
 * groupId: 团体，公司，小组，组织，项目，或者其它团体。团体标识的约定是，它以创建这个项目的组织名称的逆向域名(reverse domain name)开头。
@@ -44,7 +43,7 @@ maven内置了三个生命周期，并为每个生命周期内置了一些阶段
 * type: 相应的依赖产品包形式，如jar，war
 * scope: 用于限制相应的依赖范围，包括以下的几种变量：
 	* compile： 默认的scope，表示 dependency 都可以在生命周期中使用。而且，这些dependencies 会传递到依赖的项目中。
-	* provided： 类似于编译，但支持你期待jdk或者容器提供，类似于classpath
+	* provided： 在JDK或容器已提供改依赖才使用，如sevlet.jar
 	* runtime:  表示dependency不作用在编译时，但会作用在运行和测试时
 	* test: 表示dependency作用在测试时，不作用在运行时
 	* system: 跟provided 相似，但是在系统中要以外部JAR包的形式提供，maven不会在repository查找它。
